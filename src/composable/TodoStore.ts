@@ -17,7 +17,7 @@ export const TodoStore = reactive<{
     })
   },
   deleteTodo(id: number) {
-    this.todos.filter((todo) => todo.id !== id)
+    this.todos = this.todos.filter((todo) => todo.id !== id)
   },
   updateTodo(id: number, text: string) {
     const selectedTodo = this.todos.find((t) => t.id === id)

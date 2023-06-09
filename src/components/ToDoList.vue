@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Todo } from '../composable/types/Todo'
 import ToDoListItem from './ToDoListItem.vue'
+import { TodoStore } from '../composable/TodoStore'
 </script>
 
 <template>
-  <main class="flex w-full flex-col items-center justify-center gap-4">
+  <main class="flex flex-col items-center justify-center gap-4 w-11/12 mx-auto">
     <section
       class="flex max-w-[1980px] items-center justify-center px-4 py-6 text-white"
     >
@@ -23,46 +23,31 @@ import ToDoListItem from './ToDoListItem.vue'
     </form>
     <transition-group
       tag="ul"
-      enter-active-class="transform-gpu"
-      enter-class="opacity-0 -translate-x-full"
-      enter-to-class="opacity-100 translate-x-0"
-      leave-active-class="absolute transform-gpu"
-      leave-class="opacity-100 translate-x-0"
-      leave-to-class="opacity-0 -translate-x-full"
-      class="flex w-full flex-col gap-4 px-12"
-      @before-leave="beforeLeave"
+      enter-active-class="duration-300 ease-out"
+      enter-from-class="transform opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="transform opacity-0"
+      class="flex w-full flex-col space-y-4"
     >
-      <ToDoListItem v-for="todo in todos" :key="todo.id" :todo="todo" />
+      <ToDoListItem v-for="todo in TodoStore.todos" :key="todo.id" :todo="todo" />
     </transition-group>
   </main>
 </template>
 
 <script lang="ts">
-import { TodoStore } from '../composable/TodoStore'
-
 type ToDoListData = {
-  todos: Todo[]
   text: string
 }
 
 export default {
   data(): ToDoListData {
     return {
-      todos: TodoStore.todos,
       text: ''
     }
   },
   methods: {
-    beforeLeave(el: Element) {
-      const { marginLeft, marginTop, width, height } =
-        window.getComputedStyle(el)
-      if (el instanceof HTMLElement) {
-        el.style.left = `${el.offsetLeft - parseFloat(marginLeft ?? 10)}px`
-        el.style.top = `${el.offsetTop - parseFloat(marginTop ?? 10)}px`
-        el.style.width = width
-        el.style.height = height
-      }
-    },
     submitForm(event: Event) {
       event.preventDefault() // Prevent the default form submission
 
