@@ -21,7 +21,9 @@ import { TodoStore } from '../composable/TodoStore'
           name="create-todo"
           type="text"
           v-model="text"
-          class="input-bordered input-secondary input join-item"
+          :aria-invalid="text.length > 50"
+          :data-invalid="text.length > 50"
+          class="input-bordered input-secondary input join-item data-[invalid='true']:input-error"
           placeholder="Insert a todo"
           autofocus
           required
@@ -37,7 +39,7 @@ import { TodoStore } from '../composable/TodoStore'
       <label
         :data-invalid="text.length > 50"
         for="create-todo"
-        class="data-[invalid='true']:label data-[invalid='true']:label-text data-[invalid='false']:hidden data-[invalid='true']:text-red-600"
+        class="data-[invalid='true']:label data-[invalid='true']:label-text data-[invalid='false']:hidden data-[invalid='true']:text-error"
         >The maximum size of an todo name is 50 chars.</label
       >
     </form>

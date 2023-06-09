@@ -52,7 +52,9 @@ const props = defineProps<{
           name="edit-todo"
           type="text"
           v-model="newText"
-          class="input-bordered input-secondary input join-item"
+          :aria-invalid="newText.length > 50"
+          :data-invalid="newText.length > 50"
+          class="input-bordered input-secondary input join-item data-[invalid='true']:input-error"
           placeholder="Edit your todo"
           required
         />
@@ -67,8 +69,8 @@ const props = defineProps<{
       </div>
       <label
         :data-invalid="newText.length > 50"
-        for="edit-todo"
-        class="data-[invalid='true']:label data-[invalid='true']:label-text data-[invalid='false']:hidden data-[invalid='true']:text-red-600"
+        for="create-todo"
+        class="data-[invalid='true']:label data-[invalid='true']:label-text data-[invalid='false']:hidden data-[invalid='true']:text-error"
         >The maximum size of an todo name is 50 chars.</label
       >
     </form>
