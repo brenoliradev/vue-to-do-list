@@ -10,10 +10,15 @@ import ToDoListItem from './ToDoListItem.vue'
     >
       <h2 class="text-4xl font-semibold">Vue to-do-list</h2>
     </section>
-    <form>
+    <form @submit="submitForm">
       <div class="join">
-        <input class="input-bordered input join-item" placeholder="Email" />
-        <button class="join-item btn rounded-r-full">Subscribe</button>
+        <input
+          type="text"
+          v-model="text"
+          class="input-bordered input join-item"
+          placeholder="Insert a todo"
+        />
+        <button class="join-item btn rounded-r-full" type="submit">Add</button>
       </div>
     </form>
     <transition-group
@@ -24,10 +29,10 @@ import ToDoListItem from './ToDoListItem.vue'
       leave-active-class="absolute transform-gpu"
       leave-class="opacity-100 translate-x-0"
       leave-to-class="opacity-0 -translate-x-full"
-      class="flex w-full flex-col space-y-4 px-12"
+      class="flex w-full flex-col gap-4 px-12"
       @before-leave="beforeLeave"
     >
-      <ToDoListItem />
+      <ToDoListItem v-for="todo in todos" :key="todo.id" :todo="todo" />
     </transition-group>
   </main>
 </template>
@@ -37,12 +42,14 @@ import { TodoStore } from '../composable/TodoStore'
 
 type ToDoListData = {
   todos: Todo[]
+  text: string
 }
 
 export default {
   data(): ToDoListData {
     return {
-      todos: TodoStore.todos
+      todos: TodoStore.todos,
+      text: ''
     }
   },
   methods: {
@@ -55,6 +62,15 @@ export default {
         el.style.width = width
         el.style.height = height
       }
+    },
+    submitForm(event: Event) {
+      event.preventDefault() // Prevent the default form submission
+
+      console.log('submited => ', this.text)
+      TodoStore.addTodo(this.text)
+
+      // Reset the form fields
+      this.text = ''
     }
   }
 }
