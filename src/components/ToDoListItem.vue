@@ -1,10 +1,37 @@
-<script lang="ts" setup>
-import { Todo } from '../composable/types/Todo'
-import { TodoStore } from '../composable/TodoStore'
+<script setup lang="ts">
+import { defineProps, nextTick, ref } from 'vue';
+import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/20/solid';
+import { TodoStore } from '../composable/TodoStore';
+import { Todo } from '../composable/types/Todo';
 
 const props = defineProps<{
-  todo: Todo
-}>()
+  todo: Todo;
+}>();
+
+const newText = ref('');
+const edit = ref(false)
+
+function submitForm(event: Event, id: number) {
+  event.preventDefault();
+
+  if (!newText) return;
+  TodoStore.updateTodo(id, newText.value);
+
+  newText.value = '';
+  edit.value = false;
+  props.todo.done = false;
+}
+
+function toggleEdit(id: number) {
+  edit.value = !edit.value;
+
+  nextTick(() => {
+    const inputElement = document.getElementById(`edit-todo ${id}`);
+    if (inputElement) {
+      inputElement.focus();
+    }
+  });
+}
 </script>
 
 <template>
@@ -94,46 +121,3 @@ const props = defineProps<{
     </div>
   </li>
 </template>
-
-<script lang="ts">
-import { TrashIcon } from '@heroicons/vue/20/solid'
-import { PencilSquareIcon } from '@heroicons/vue/20/solid'
-import { nextTick } from 'vue'
-
-type ToDoListData = {
-  newText: string
-  edit: boolean
-}
-
-export default {
-  data(): ToDoListData {
-    return {
-      newText: '',
-      edit: false
-    }
-  },
-  components: {
-    TrashIcon,
-    PencilSquareIcon
-  },
-  methods: {
-    submitForm(event: Event, id: number) {
-      event.preventDefault() // Prevent the default form submission
-
-      if (this.newText === '') return
-      TodoStore.updateTodo(id, this.newText)
-
-      // Reset the form fields
-      this.newText = ''
-      this.edit = false
-    },
-    toggleEdit(id: number) {
-      this.edit = !this.edit
-
-      nextTick(() => {
-        document.getElementById('edit-todo ' + id)?.focus()
-      })
-    }
-  }
-}
-</script>

@@ -1,6 +1,18 @@
 <script setup lang="ts">
-import ToDoListItem from './ToDoListItem.vue'
-import { TodoStore } from '../composable/TodoStore'
+import { ref } from 'vue';
+import ToDoListItem from './ToDoListItem.vue';
+import { TodoStore } from '../composable/TodoStore';
+
+const text = ref('');
+
+function submitForm(event: Event) {
+  event.preventDefault();
+
+  if (!text.value) return;
+  TodoStore.addTodo(text.value);
+
+  text.value = '';
+}
 </script>
 
 <template>
@@ -61,28 +73,3 @@ import { TodoStore } from '../composable/TodoStore'
     </transition-group>
   </main>
 </template>
-
-<script lang="ts">
-type ToDoListData = {
-  text: string
-}
-
-export default {
-  data(): ToDoListData {
-    return {
-      text: ''
-    }
-  },
-  methods: {
-    submitForm(event: Event) {
-      event.preventDefault() // Prevent the default form submission
-
-      if (this.text === '') return
-      TodoStore.addTodo(this.text)
-
-      // Reset the form fields
-      this.text = ''
-    }
-  }
-}
-</script>
