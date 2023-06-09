@@ -18,7 +18,7 @@ import ToDoListItem from './ToDoListItem.vue'
           class="input-bordered input join-item"
           placeholder="Insert a todo"
         />
-        <button class="join-item btn rounded-r-full" type="submit">Add</button>
+        <button :disabled="!text" class="join-item btn rounded-r-full disabled:cursor-not-allowed" type="submit">Add</button>
       </div>
     </form>
     <transition-group
@@ -66,7 +66,7 @@ export default {
     submitForm(event: Event) {
       event.preventDefault() // Prevent the default form submission
 
-      console.log('submited => ', this.text)
+      if (this.text === '') return
       TodoStore.addTodo(this.text)
 
       // Reset the form fields
