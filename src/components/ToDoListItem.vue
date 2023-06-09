@@ -74,18 +74,18 @@ const props = defineProps<{
     </form>
     <div class="flex gap-3">
       <button
-        @click="TodoStore.deleteTodo(props.todo.id)"
-        :name="'delete todo with id: ' + props.todo.id"
-      >
-        <TrashIcon
-          class="h-6 w-6 cursor-pointer fill-secondary hover:fill-secondary-focus hover:opacity-80"
-        />
-      </button>
-      <button
         @click="toggleEdit(props.todo.id)"
         :name="'delete todo with id: ' + props.todo.id"
       >
         <PencilSquareIcon
+          class="h-6 w-6 cursor-pointer fill-secondary hover:fill-secondary-focus hover:opacity-80"
+        />
+      </button>
+      <button
+        @click="TodoStore.deleteTodo(props.todo.id)"
+        :name="'delete todo with id: ' + props.todo.id"
+      >
+        <TrashIcon
           class="h-6 w-6 cursor-pointer fill-secondary hover:fill-secondary-focus hover:opacity-80"
         />
       </button>
