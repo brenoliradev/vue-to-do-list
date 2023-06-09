@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { defineProps, nextTick, ref } from 'vue';
-import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/20/solid';
-import { TodoStore } from '../composable/TodoStore';
-import { Todo } from '../composable/types/Todo';
+import { defineProps, nextTick, ref } from 'vue'
+import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/20/solid'
+import { TodoStore } from '../composable/TodoStore'
+import { Todo } from '../composable/types/Todo'
 
 const props = defineProps<{
-  todo: Todo;
-}>();
+  todo: Todo
+}>()
 
-const newText = ref('');
+const newText = ref('')
 const edit = ref(false)
 
 function submitForm(event: Event, id: number) {
-  event.preventDefault();
+  event.preventDefault()
 
-  if (!newText) return;
-  TodoStore.updateTodo(id, newText.value);
+  if (!newText) return
+  TodoStore.updateTodo(id, newText.value)
 
-  newText.value = '';
-  edit.value = false;
-  props.todo.done = false;
+  newText.value = ''
+  edit.value = false
+  props.todo.done = false
 }
 
 function toggleEdit(id: number) {
-  edit.value = !edit.value;
+  edit.value = !edit.value
 
   nextTick(() => {
-    const inputElement = document.getElementById(`edit-todo ${id}`);
+    const inputElement = document.getElementById(`edit-todo ${id}`)
     if (inputElement) {
-      inputElement.focus();
+      inputElement.focus()
     }
-  });
+  })
 }
 </script>
 

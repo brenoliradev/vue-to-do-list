@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import ToDoListItem from './ToDoListItem.vue';
-import { TodoStore } from '../composable/TodoStore';
+import { ref } from 'vue'
+import ToDoListItem from './ToDoListItem.vue'
+import { TodoStore } from '../composable/TodoStore'
 
-const text = ref('');
+const text = ref('')
 
 function submitForm(event: Event) {
-  event.preventDefault();
+  event.preventDefault()
 
-  if (!text.value) return;
-  TodoStore.addTodo(text.value);
+  if (!text.value) return
+  TodoStore.addTodo(text.value)
 
-  text.value = '';
+  text.value = ''
 }
 </script>
 
